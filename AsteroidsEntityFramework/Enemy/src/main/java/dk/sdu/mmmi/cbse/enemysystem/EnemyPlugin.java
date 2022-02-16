@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse.playersystem;
+package dk.sdu.mmmi.cbse.enemysystem;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -8,11 +8,13 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 
-public class PlayerPlugin implements IGamePluginService {
+import java.util.Random;
+
+public class EnemyPlugin implements IGamePluginService {
 
     private Entity player;
 
-    public PlayerPlugin() {
+    public EnemyPlugin() {
     }
 
     @Override
@@ -24,21 +26,21 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     private Entity createPlayerShip(GameData gameData) {
-
-        float deacceleration = 10;
-        float acceleration = 200;
-        float maxSpeed = 300;
+        float deceleration = 10;
+        float acceleration = 150;
+        float maxSpeed = 200;
         float rotationSpeed = 5;
-        float x = gameData.getDisplayWidth() / 2f;
-        float y = gameData.getDisplayHeight() / 2f;
+        float x = new Random().nextFloat() * gameData.getDisplayWidth();
+        float y = new Random().nextFloat() * gameData.getDisplayHeight();
         float radians = 3.1415f / 2;
         
-        Entity playerShip = new Player();
-        playerShip.setRadius(8);
-        playerShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
-        playerShip.add(new PositionPart(x, y, radians));
-        playerShip.add(new LifePart(3, 0));
-        return playerShip;
+        Entity enemyShip = new Enemy();
+        enemyShip.setRadius(6);
+        enemyShip.add(new MovingPart(deceleration, acceleration, maxSpeed, rotationSpeed));
+        enemyShip.add(new PositionPart(x, y, radians));
+        enemyShip.add(new LifePart(1, 1000));
+        
+        return enemyShip;
     }
 
     @Override
